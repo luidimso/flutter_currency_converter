@@ -34,7 +34,50 @@ class _HomeState extends State<Home> {
         title: const Text("Converter"),
         backgroundColor: Colors.amber,
         centerTitle: true,
-      )
+      ),
+      body: FutureBuilder<Map>(
+        future: get(),
+        builder: (context, snapshot) {
+          switch(snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return const Center(
+                child: Text("Loading...",
+                style: TextStyle(
+                  color: Colors.amber,
+                  fontSize: 25.0
+                ),),
+              );
+            default:
+              if(snapshot.hasError) {
+                return const Center(
+                  child: Text("Error :(",
+                    style: TextStyle(
+                        color: Colors.amber,
+                        fontSize: 25.0
+                    ),),
+                );
+              } else {
+                return Container(
+                  color: Colors.green,
+                );
+              }
+          }
+        },
+      ),
     );
   }
 }
+
+
+/* theme: ThemeData(
+hintColor: Colors.amber,
+primaryColor: Colors.white,
+inputDecorationTheme: InputDecorationTheme(
+enabledBorder:
+OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+focusedBorder:
+OutlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
+hintStyle: TextStyle(color: Colors.amber),
+)),
+)); */
