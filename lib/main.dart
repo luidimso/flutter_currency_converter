@@ -9,6 +9,16 @@ import 'dart:async';
 void main() async {
   runApp(MaterialApp(
     home: Home(),
+    theme:  ThemeData(
+        hintColor: Colors.amber,
+        primaryColor: Colors.white,
+        inputDecorationTheme: const InputDecorationTheme(
+          enabledBorder:
+          OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          focusedBorder:
+          OutlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
+          hintStyle: TextStyle(color: Colors.amber),
+        )),
   ));
 }
 
@@ -26,6 +36,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  double dollar = 0;
+  double euro = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,8 +71,67 @@ class _HomeState extends State<Home> {
                     ),),
                 );
               } else {
-                return Container(
-                  color: Colors.green,
+                dollar = snapshot.data?["results"]["currencies"]["USD"]["buy"];
+                euro = snapshot.data?["results"]["currencies"]["EUR"]["buy"];
+
+                print(dollar);
+                print(euro);
+
+                return const SingleChildScrollView(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.monetization_on,
+                        size: 150,
+                        color: Colors.amber,
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: "Reais",
+                          labelStyle: TextStyle(
+                            color: Colors.amber
+                          ),
+                          prefixText: "BRL"
+                        ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25
+                        ),
+                      ),
+                      Divider(),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            labelText: "Dollars",
+                            labelStyle: TextStyle(
+                                color: Colors.amber
+                            ),
+                            prefixText: "USD"
+                        ),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25
+                        ),
+                      ),
+                      Divider(),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            labelText: "Euros",
+                            labelStyle: TextStyle(
+                                color: Colors.amber
+                            ),
+                            prefixText: "EUR"
+                        ),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25
+                        ),
+                      )
+                    ],
+                  ),
                 );
               }
           }
