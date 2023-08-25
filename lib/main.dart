@@ -6,6 +6,23 @@ import 'dart:async';
 
  Uri url = Uri.https('api.hgbrasil.com', '/finance', {'key': '06a34179'});
 
+
+final realController = TextEditingController();
+final dollarController = TextEditingController();
+final euroController = TextEditingController();
+
+void realChanged(String value) {
+  print("OOOOOOOOPPPPPPPPAAAAAA");
+}
+
+void dollarChanged(String value) {
+  print(value);
+}
+
+void euroChanged(String value) {
+  print(value);
+}
+
 void main() async {
   runApp(MaterialApp(
     home: Home(),
@@ -77,59 +94,20 @@ class _HomeState extends State<Home> {
                 print(dollar);
                 print(euro);
 
-                return const SingleChildScrollView(
+                return SingleChildScrollView(
                   padding: EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Icon(Icons.monetization_on,
+                      const Icon(Icons.monetization_on,
                         size: 150,
                         color: Colors.amber,
                       ),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: "Reais",
-                          labelStyle: TextStyle(
-                            color: Colors.amber
-                          ),
-                          prefixText: "BRL"
-                        ),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25
-                        ),
-                      ),
-                      Divider(),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            labelText: "Dollars",
-                            labelStyle: TextStyle(
-                                color: Colors.amber
-                            ),
-                            prefixText: "USD"
-                        ),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25
-                        ),
-                      ),
-                      Divider(),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            labelText: "Euros",
-                            labelStyle: TextStyle(
-                                color: Colors.amber
-                            ),
-                            prefixText: "EUR"
-                        ),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25
-                        ),
-                      )
+                      buildTextField("Real", "BRL", realController),
+                      const Divider(),
+                      buildTextField("Dollar", "USD", dollarController),
+                      const Divider(),
+                      buildTextField("Euro", "EUR", euroController)
                     ],
                   ),
                 );
@@ -141,15 +119,33 @@ class _HomeState extends State<Home> {
   }
 }
 
+Widget buildTextField(String label, String prefix, TextEditingController controller) {
+  callEvent(String value) {
+    switch (label) {
+      case "Real":
+        realChanged(value);
+      case "Dollar":
+        dollarChanged(value);
+      case "Euro":
+        euroChanged(value);
+    }
+  }
 
-/* theme: ThemeData(
-hintColor: Colors.amber,
-primaryColor: Colors.white,
-inputDecorationTheme: InputDecorationTheme(
-enabledBorder:
-OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-focusedBorder:
-OutlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
-hintStyle: TextStyle(color: Colors.amber),
-)),
-)); */
+
+  return TextField(
+    controller: controller,
+    keyboardType: TextInputType.number,
+    decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(
+            color: Colors.amber
+        ),
+        prefixText: prefix
+    ),
+    style: const TextStyle(
+        color: Colors.white,
+        fontSize: 25
+    ),
+    onChanged: callEvent,
+  );
+}
