@@ -6,21 +6,50 @@ import 'dart:async';
 
  Uri url = Uri.https('api.hgbrasil.com', '/finance', {'key': '06a34179'});
 
+double dollar = 0;
+double euro = 0;
 
 final realController = TextEditingController();
 final dollarController = TextEditingController();
 final euroController = TextEditingController();
 
+void _clearAll(){
+  realController.text = "";
+  dollarController.text = "";
+  euroController.text = "";
+}
+
 void realChanged(String value) {
-  print("OOOOOOOOPPPPPPPPAAAAAA");
+  if(value.isEmpty) {
+    _clearAll();
+    return;
+  }
+
+  double real = double.parse(value);
+  dollarController.text = (real/dollar).toStringAsFixed(2);
+  euroController.text = (real/euro).toStringAsFixed(2);
 }
 
 void dollarChanged(String value) {
-  print(value);
+  if(value.isEmpty) {
+    _clearAll();
+    return;
+  }
+
+  double dollarInput = double.parse(value);
+  realController.text = (dollarInput * dollar).toStringAsFixed(2);
+  euroController.text = (dollarInput * dollar / euro).toStringAsFixed(2);
 }
 
 void euroChanged(String value) {
-  print(value);
+  if(value.isEmpty) {
+    _clearAll();
+    return;
+  }
+
+  double euroInput = double.parse(value);
+  realController.text = (euroInput * euro).toStringAsFixed(2);
+  dollarController.text = (euroInput * euro / dollar).toStringAsFixed(2);
 }
 
 void main() async {
@@ -53,9 +82,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  double dollar = 0;
-  double euro = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
